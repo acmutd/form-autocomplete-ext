@@ -71,23 +71,92 @@ document.getElementById('fill').addEventListener('click', async () => {
 });
 
 function autofillForm(orgName, name, phone, email, presEmail, ruoName, ruoEmail, advName, advPhone) {
-  const orgNameField = document.querySelector('input[name="organizationName"]');
-  const nameField = document.querySelector('input[name="name"]');
-  const phoneField = document.querySelector('input[name="phone"]');
-  const emailField = document.querySelector('input[name="email"]');
-  const presEmailField = document.querySelector('input[name="presidentEmail"]');
-  const ruoNameField = document.querySelector('input[name="ruoName"]');
-  const ruoEmailField = document.querySelector('input[name="ruoEmail"]');
-  const advNameField = document.querySelector('input[name="advisorName"]');
-  const advPhoneField = document.querySelector('input[name="advisorPhone"]');
+  // Nested bc of chrome.scripting.executeScript jank
+  function getInputField(questionText) {
+    const questionElement = Array.from(document.querySelectorAll('[data-automation-id="questionTitle"]'))
+      .find(el => el.textContent.includes(questionText));
+
+    if (questionElement) {
+      // Locate the input field within the same question container
+      const inputField = questionElement.closest('[data-automation-id="questionItem"]').querySelector('input[data-automation-id="textInput"]');
+      return inputField;
+    }
+    console.error(`ERROR: Question with text "${questionText}" not found.`);
+    return null;
+  }
+
+  function getRadioButton(questionText, labelText) {
+    // Find the div containing the specific question text
+    const questions = document.querySelectorAll('[data-automation-id="questionItem"]');
+    let questionContainer = null;
   
-  if (orgNameField) orgNameField.value = orgName;
-  if (nameField) nameField.value = name;
-  if (phoneField) phoneField.value = phone;
-  if (emailField) emailField.value = email;
-  if (presEmailField) presEmailField.value = presEmail;
-  if (ruoNameField) ruoNameField.value = ruoName;
-  if (ruoEmailField) ruoEmailField.value = ruoEmail;
-  if (advNameField) advNameField.value = advName;
-  if (advPhoneField) advPhoneField.value = advPhone;
+    questions.forEach((question) => {
+      const questionTitle = question.querySelector('[data-automation-id="questionTitle"]');
+      if (questionTitle && questionTitle.innerText.includes(questionText)) {
+        questionContainer = question;
+      }
+    });
+  
+    if (!questionContainer) {
+      console.error(`ERROR: Question with text "${questionText}" not found.`);
+      return null;
+    }
+  
+    // Find the radio button label based on the label text within the identified question container
+    const labels = questionContainer.querySelectorAll('label');
+    let foundRadioButton = null;
+  
+    labels.forEach((label) => {
+      const labelSpan = label.querySelector('span[aria-label]');
+      if (labelSpan && labelSpan.innerText.includes(labelText)) {
+        foundRadioButton = label.querySelector('input[type="radio"]');
+      }
+    });
+  
+    if (!foundRadioButton) {
+      console.error(`ERROR: Radio button with label "${labelText}" not found for question "${questionText}".`);
+      return null;
+    }
+  
+    return foundRadioButton;
+  }
+
+  // Questions!
+  const q1 = getRadioButton("Do you agree to the above Room Usage Policies?", "I agree");
+  const q6 = getInputField("Full Organization Name- No Acronyms");
+  const q7 = getInputField("Requestor's Name:");
+  const q8 = getInputField("Requestor's Phone Number:");
+  const q9 = getInputField("Requestor's UTD Email:");
+  const q10 = getInputField("President's Name:");
+  const q11 = getInputField("President's Phone Number:");
+  const q12 = getInputField("President's UTD Email:");
+  const q13 = getInputField("RUO's Name:");
+  const q14 = getInputField("RUO's Phone Number:");
+  const q15 = getInputField("RUO's UTD Email:");
+  const q16 = getInputField("Advisor's Name:");
+  const q17 = getInputField("Advisor's Phone Number:");
+  const q18 = getInputField("Advisor's UTD Email:");
+  const q24 = getRadioButton("Will you need access to the projector?", "Yes");
+  const q25 = getRadioButton("Will you need access to the built-in room audio system?", "Yes");
+  const q26 = getRadioButton("Will you need a Microphone?", "Yes, 1 lapel microphone");
+  const q27 = getRadioButton("Will Parking Passes Need to be Ordered for this Event?", "No");
+  
+  q1.click();
+  q6.value = orgName;
+  q7.value = name;
+  q8.value = phone;
+  q9.value = email;
+  q10.value = ""; // president's name
+  q11.value = ""; // president's phone
+  q12.value = presEmail;
+  q13.value = ruoName;
+  q14.value = ""; // ruo phone
+  q15.value = ruoEmail;
+  q16.value = advName;
+  q17.value = advPhone;
+  q18.value = ""; // adv email
+  q24.click();
+  q25.click();
+  q26.click();
+  q27.click();
 }
