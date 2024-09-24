@@ -1,49 +1,71 @@
 // Set up to run when the content script is loaded
-window.onload = function() {
-  console.log("yo")
+window.onload = async function() {
   // Get stored values from Chrome storage
-  chrome.storage.sync.get(["orgName"], function(data) {
-      // Select the input field using the ID or a more precise selector
-      const orgNameInput = document.querySelector("orgName");
+  const data = await chrome.storage.sync.get(['orgName', 'name', 'phone', 'email', 'presEmail', 'ruoName', 'ruoEmail', 'advName', 'advPhone']);
+  console.log("data: ", data);
+  
+  // Select the input field using the ID or a more precise selector
+  const orgName = document.getElementById("orgName");
+  const name = document.getElementById('name');
+  const phone = document.getElementById('phone');
+  const email = document.getElementById('email');
+  const presEmail = document.getElementById('presEmail');
+  const ruoName = document.getElementById('ruoName');
+  const ruoEmail = document.getElementById('ruoEmail');
+  const advName = document.getElementById('advName');
+  const advPhone = document.getElementById('advPhone');
 
-      // If a stored value exists, display it
-      if (data.orgName) {
-        orgNameInput.value = data.orgName;
-      }
-  });
+  // If a stored value exists, display it
+  if (data) {
+    if (data.orgName) orgName.value = data.orgName;
+    if (data.name) name.value = data.name;
+    if (data.phone) phone.value = data.phone;
+    if (data.email) email.value = data.email;
+    if (data.presEmail) presEmail.value = data.presEmail;
+    if (data.ruoName) ruoName.value = data.ruoName;
+    if (data.ruoEmail) ruoEmail.value = data.ruoEmail;
+    if (data.advName) advName.value = data.advName;
+    if (data.advPhone) advPhone.value = data.advPhone;
+  }
 
   // Add an event listener to save the new value when the input changes
-  const orgNameInput = document.querySelector("orgName");
-  orgNameInput.addEventListener("change", function() {
-      // Save the current value to Chrome storage
-      chrome.storage.sync.set({ orgName: orgNameInput.value });
+  // and save the current value to Chrome storage
+  orgName.addEventListener("change", function() {
+      chrome.storage.sync.set({ orgName: orgName.value });
+  });
+  name.addEventListener("change", function() {
+    chrome.storage.sync.set({ name: name.value });
+  });
+  phone.addEventListener("change", function() {
+    chrome.storage.sync.set({ phone: phone.value });
+  });
+  email.addEventListener("change", function() {
+    chrome.storage.sync.set({ email: email.value });
+  });
+  presEmail.addEventListener("change", function() {
+    chrome.storage.sync.set({ presEmail: presEmail.value });
+  });
+  ruoName.addEventListener("change", function() {
+    chrome.storage.sync.set({ ruoName: ruoName.value });
+  });
+  ruoEmail.addEventListener("change", function() {
+    chrome.storage.sync.set({ ruoEmail: ruoEmail.value });
+  });
+  advName.addEventListener("change", function() {
+    chrome.storage.sync.set({ advName: advName.value });
+  });
+  advPhone.addEventListener("change", function() {
+    chrome.storage.sync.set({ advPhone: advPhone.value });
   });
 };
 
-document.getElementById('save').addEventListener('click', () => {
-  const orgName = document.getElementById('orgName').value;
-  const name = document.getElementById('name').value;
-  const phone = document.getElementById('phone').value;
-  const email = document.getElementById('email').value;
-  const presEmail = document.getElementById('presEmail').value;
-  const ruoName = document.getElementById('ruoName').value;
-  const ruoEmail = document.getElementById('ruoEmail').value;
-  const advName = document.getElementById('advName').value;
-  const advPhone = document.getElementById('advPhone').value;
-
-  chrome.storage.sync.set({ orgName, name, phone, email, presEmail, ruoName, ruoEmail, advName, advPhone }, () => {
-    alert('Data saved!');
-  });
-});
-
-document.getElementById('fill').addEventListener('click', () => {
-  chrome.storage.sync.get(['orgName', 'name', 'phone', 'email', 'presEmail', 'ruoName', 'ruoEmail', 'advName', 'advPhone'], (data) => {
-    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-      chrome.scripting.executeScript({
-        target: { tabId: tabs[0].id },
-        func: autofillForm,
-        args: [data.orgName, data.name, data.phone, data.email, data.presEmail, data.ruoName, data.ruoEmail, data.advName, data.advPhone]
-      });
+document.getElementById('fill').addEventListener('click', async () => {
+  const data = await chrome.storage.sync.get(['orgName', 'name', 'phone', 'email', 'presEmail', 'ruoName', 'ruoEmail', 'advName', 'advPhone']);
+  chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+    chrome.scripting.executeScript({
+      target: { tabId: tabs[0].id },
+      func: autofillForm,
+      args: [data.orgName, data.name, data.phone, data.email, data.presEmail, data.ruoName, data.ruoEmail, data.advName, data.advPhone]
     });
   });
 });
