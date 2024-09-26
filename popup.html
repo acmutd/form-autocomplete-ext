@@ -1,63 +1,121 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Autofill Form</title>
     <style>
-      body { font-family: Arial, sans-serif; padding: 10px; }
-      label { display: block; margin-top: 10px; }
-      input { width: 100%; padding: 5px; }
-      button { margin-top: 10px; padding: 10px; background-color: #4CAF50; color: white; border: none; cursor: pointer; }
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f9;
+        padding: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        margin: 0;
+        width: 300px;
+      }
+
+      .container {
+        background-color: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        max-width: 500px;
+        width: 100%;
+      }
+
+      h2 {
+        text-align: center;
+        color: #333;
+        margin-bottom: 20px;
+      }
+
+      label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 5px;
+        color: #555;
+      }
+
+      input[type="text"] {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-size: 16px;
+        box-sizing: border-box;
+      }
+
+      button {
+        width: 100%;
+        padding: 12px;
+        background-color: #4caf50;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+
+      button:hover {
+        background-color: #45a049;
+      }
+
+      button:active {
+        background-color: #3e8e41;
+      }
     </style>
   </head>
   <body>
-    <h2>Room Request Autofill</h2>
-    <label for="text">Full Organization Name:</label>
-    <input type="text" id="orgName" />
+    <div class="container">
+      <h2>Room Request Autofill</h2>
 
-    <label for="text">Requestor's Name:</label>
-    <input type="text" id="name" />
+      <label for="orgName">Full Organization Name:</label>
+      <input type="text" id="orgName" />
 
-    <label for="text">Requestor's Phone Number:</label>
-    <input type="text" id="phone" />
-    
-    <label for="text">Requestor's UTD Email:</label>
-    <input type="text" id="email" />
+      <label for="name">Requestor's Name:</label>
+      <input type="text" id="name" />
 
-    <label for="text">President's Name:</label>
-    <input type="text" id="presName" />
+      <label for="phone">Requestor's Phone Number:</label>
+      <input type="text" id="phone" />
 
-    <label for="text">President's Phone Number:</label>
-    <input type="text" id="presPhone" />
+      <label for="email">Requestor's UTD Email:</label>
+      <input type="text" id="email" />
 
-    <label for="text">President's UTD Email:</label>
-    <input type="text" id="presEmail" />
+      <label for="presName">President's Name:</label>
+      <input type="text" id="presName" />
 
-    <label for="text">RUO's Name:</label>
-    <input type="text" id="ruoName" />
+      <label for="presPhone">President's Phone Number:</label>
+      <input type="text" id="presPhone" />
 
-    <label for="text">RUO's Phone Number:</label>
-    <input type="text" id="ruoPhone" />
+      <label for="presEmail">President's UTD Email:</label>
+      <input type="text" id="presEmail" />
 
-    <label for="text">RUO's UTD Email:</label>
-    <input type="text" id="ruoEmail" />
+      <label for="ruoName">RUO's Name:</label>
+      <input type="text" id="ruoName" />
 
-    <label for="text">Advisor's Name:</label>
-    <input type="text" id="advName" />
+      <label for="ruoPhone">RUO's Phone Number:</label>
+      <input type="text" id="ruoPhone" />
 
-    <label for="text">Advisor's Phone Number</label>
-    <input type="text" id="advPhone" />
+      <label for="ruoEmail">RUO's UTD Email:</label>
+      <input type="text" id="ruoEmail" />
 
-    <label for="text">Advisor's UTD Email:</label>
-    <input type="text" id="advEmail" />
+      <label for="advName">Advisor's Name:</label>
+      <input type="text" id="advName" />
 
-    <button id="fill">Autofill Form</button>
+      <label for="advPhone">Advisor's Phone Number:</label>
+      <input type="text" id="advPhone" />
+
+      <label for="advEmail">Advisor's UTD Email:</label>
+      <input type="text" id="advEmail" />
+
+      <button id="fill">Autofill Form</button>
+    </div>
 
     <script src="popup.js"></script>
   </body>
-  <style>
-    body {
-      width: 500px;
-      padding-right: 20px;
-    }
-  </style>
 </html>

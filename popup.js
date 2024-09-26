@@ -25,21 +25,19 @@ window.onload = async function() {
   const advEmail = document.getElementById('advEmail');
 
   // If a stored value exists, display it
-  if (data) {
-    if (data.orgName) orgName.value = data.orgName;
-    if (data.name) name.value = data.name;
-    if (data.phone) phone.value = data.phone;
-    if (data.email) email.value = data.email;
-    if (data.presName) presName.value = data.presName;
-    if (data.presPhone) presPhone.value = data.presPhone;
-    if (data.presEmail) presEmail.value = data.presEmail;
-    if (data.ruoName) ruoName.value = data.ruoName;
-    if (data.ruoPhone) ruoPhone.value = data.ruoPhone;
-    if (data.ruoEmail) ruoEmail.value = data.ruoEmail;
-    if (data.advName) advName.value = data.advName;
-    if (data.advPhone) advPhone.value = data.advPhone;
-    if (data.advEmail) advEmail.value = data.advEmail;
-  }
+  orgName.value = data.orgName || '';
+  name.value = data.name || '';
+  phone.value = data.phone || '';
+  email.value = data.email || '';
+  presName.value = data.presName || '';
+  presPhone.value = data.presPhone || '';
+  presEmail.value = data.presEmail || '';
+  ruoName.value = data.ruoName || '';
+  ruoPhone.value = data.ruoPhone || '';
+  ruoEmail.value = data.ruoEmail || '';
+  advName.value = data.advName || '';
+  advPhone.value = data.advPhone || '';
+  advEmail.value = data.advEmail || '';
 
   // Add an event listener to save the new value when the input changes
   // and save the current value to Chrome storage
@@ -89,22 +87,23 @@ window.onload = async function() {
 };
 
 document.getElementById('fill').addEventListener('click', async () => {
-  const data = await chrome.storage.sync.get(
-    ['orgName', 
-      'name', 'phone', 'email', 
-      'presName', 'presPhone', 'presEmail', 
-      'ruoName', 'ruoPhone', 'ruoEmail', 
-      'advName', 'advPhone', 'advEmail']);
+  const keys = [
+    'orgName', 'name', 'phone', 'email', 
+    'presName', 'presPhone', 'presEmail', 
+    'ruoName', 'ruoPhone', 'ruoEmail', 
+    'advName', 'advPhone', 'advEmail'
+  ];
+  
+  const data = await chrome.storage.sync.get(keys);
+
+  // Ensure each value is serializable (replace undefined with an empty string)
+  const sanitizedData = keys.map(key => data[key] || '');
+
   chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
     chrome.scripting.executeScript({
       target: { tabId: tabs[0].id },
       func: autofillForm,
-      args: [
-        data.orgName, 
-        data.name, data.phone, data.email, 
-        data.presName, data.presPhone, data.presEmail, 
-        data.ruoName, data.ruoPhone, data.ruoEmail, 
-        data.advName, data.advPhone, data.advEmail]
+      args: sanitizedData
     });
   });
 });
