@@ -1,7 +1,12 @@
 // Set up to run when the content script is loaded
 window.onload = async function() {
   // Get stored values from Chrome storage
-  const data = await chrome.storage.sync.get(['orgName', 'name', 'phone', 'email', 'presEmail', 'ruoName', 'ruoEmail', 'advName', 'advPhone']);
+  const data = await chrome.storage.sync.get(
+    ['orgName', 
+      'name', 'phone', 'email', 
+      'presName', 'presPhone', 'presEmail', 
+      'ruoName', 'presPhone', 'ruoEmail', 
+      'advName', 'advPhone', 'advEmail']);
   console.log("data: ", data);
   
   // Select the input field using the ID or a more precise selector
@@ -9,11 +14,15 @@ window.onload = async function() {
   const name = document.getElementById('name');
   const phone = document.getElementById('phone');
   const email = document.getElementById('email');
+  const presName = document.getElementById('presName');
+  const presPhone = document.getElementById('presPhone');
   const presEmail = document.getElementById('presEmail');
   const ruoName = document.getElementById('ruoName');
+  const ruoPhone = document.getElementById('ruoPhone');
   const ruoEmail = document.getElementById('ruoEmail');
   const advName = document.getElementById('advName');
   const advPhone = document.getElementById('advPhone');
+  const advEmail = document.getElementById('advEmail');
 
   // If a stored value exists, display it
   if (data) {
@@ -21,11 +30,15 @@ window.onload = async function() {
     if (data.name) name.value = data.name;
     if (data.phone) phone.value = data.phone;
     if (data.email) email.value = data.email;
+    if (data.presName) presName.value = data.presName;
+    if (data.presPhone) presPhone.value = data.presPhone;
     if (data.presEmail) presEmail.value = data.presEmail;
     if (data.ruoName) ruoName.value = data.ruoName;
+    if (data.ruoPhone) ruoPhone.value = data.ruoPhone;
     if (data.ruoEmail) ruoEmail.value = data.ruoEmail;
     if (data.advName) advName.value = data.advName;
     if (data.advPhone) advPhone.value = data.advPhone;
+    if (data.advEmail) advEmail.value = data.advEmail;
   }
 
   // Add an event listener to save the new value when the input changes
@@ -33,6 +46,7 @@ window.onload = async function() {
   orgName.addEventListener("change", function() {
       chrome.storage.sync.set({ orgName: orgName.value });
   });
+
   name.addEventListener("change", function() {
     chrome.storage.sync.set({ name: name.value });
   });
@@ -42,35 +56,60 @@ window.onload = async function() {
   email.addEventListener("change", function() {
     chrome.storage.sync.set({ email: email.value });
   });
+
+  presName.addEventListener("change", function() {
+    chrome.storage.sync.set({ presName: presName.value });
+  });
+  presPhone.addEventListener("change", function() {
+    chrome.storage.sync.set({ presPhone: presPhone.value });
+  });
   presEmail.addEventListener("change", function() {
     chrome.storage.sync.set({ presEmail: presEmail.value });
   });
+
   ruoName.addEventListener("change", function() {
     chrome.storage.sync.set({ ruoName: ruoName.value });
+  });
+  ruoPhone.addEventListener("change", function() {
+    chrome.storage.sync.set({ ruoPhone: ruoPhone.value });
   });
   ruoEmail.addEventListener("change", function() {
     chrome.storage.sync.set({ ruoEmail: ruoEmail.value });
   });
+
   advName.addEventListener("change", function() {
     chrome.storage.sync.set({ advName: advName.value });
   });
   advPhone.addEventListener("change", function() {
     chrome.storage.sync.set({ advPhone: advPhone.value });
   });
+  advEmail.addEventListener("change", function() {
+    chrome.storage.sync.set({ advEmail: advEmail.value });
+  });
 };
 
 document.getElementById('fill').addEventListener('click', async () => {
-  const data = await chrome.storage.sync.get(['orgName', 'name', 'phone', 'email', 'presEmail', 'ruoName', 'ruoEmail', 'advName', 'advPhone']);
+  const data = await chrome.storage.sync.get(
+    ['orgName', 
+      'name', 'phone', 'email', 
+      'presName', 'presPhone', 'presEmail', 
+      'ruoName', 'ruoPhone', 'ruoEmail', 
+      'advName', 'advPhone', 'advEmail']);
   chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
     chrome.scripting.executeScript({
       target: { tabId: tabs[0].id },
       func: autofillForm,
-      args: [data.orgName, data.name, data.phone, data.email, data.presEmail, data.ruoName, data.ruoEmail, data.advName, data.advPhone]
+      args: [
+        data.orgName, 
+        data.name, data.phone, data.email, 
+        data.presName, data.presPhone, data.presEmail, 
+        data.ruoName, data.ruoPhone, data.ruoEmail, 
+        data.advName, data.advPhone, data.advEmail]
     });
   });
 });
 
-function autofillForm(orgName, name, phone, email, presEmail, ruoName, ruoEmail, advName, advPhone) {
+function autofillForm(orgName, name, phone, email, presName, presPhone, presEmail, ruoName, ruoPhone, ruoEmail, advName, advPhone, advEmail) {
   // Nested bc of chrome.scripting.executeScript jank
   function getInputField(questionText) {
     const questionElement = Array.from(document.querySelectorAll('[data-automation-id="questionTitle"]'))
@@ -123,6 +162,10 @@ function autofillForm(orgName, name, phone, email, presEmail, ruoName, ruoEmail,
 
   // Questions!
   const q1 = getRadioButton("Do you agree to the above Room Usage Policies?", "I agree");
+  // q2 is rooms being requested
+  // q3 is second choice room being requested
+  // q4 is third choice room being requested
+  // q5 is event date(s)
   const q6 = getInputField("Full Organization Name- No Acronyms");
   const q7 = getInputField("Requestor's Name:");
   const q8 = getInputField("Requestor's Phone Number:");
@@ -136,27 +179,37 @@ function autofillForm(orgName, name, phone, email, presEmail, ruoName, ruoEmail,
   const q16 = getInputField("Advisor's Name:");
   const q17 = getInputField("Advisor's Phone Number:");
   const q18 = getInputField("Advisor's UTD Email:");
-  const q24 = getRadioButton("Will you need access to the projector?", "Yes");
-  const q25 = getRadioButton("Will you need access to the built-in room audio system?", "Yes");
-  const q26 = getRadioButton("Will you need a Microphone?", "Yes, 1 lapel microphone");
-  const q27 = getRadioButton("Will Parking Passes Need to be Ordered for this Event?", "No");
+  // q19 is event name
+  // q20 is event description
+  // q21 is event time (including setup and teardown)
+  // q22 is estimated attendance
+  const q23 = getRadioButton("Who will be attending this event?", "Members and other UTD students");
+  const q24 = getRadioButton("Will you need access to the projector?", "No, Projector access is not needed");
+  const q25 = getRadioButton("Will you need access to the built-in room audio system?", "No");
+  const q26 = getRadioButton("Will you need a Microphone?", "No, a microphone is not needed");
+  const q27 = getInputField("If you need more than one microphone for this event, list the number and type of microphones needed below: * Type N/A if no microphone is needed. *", "N/A");
+  const q28 = getRadioButton("Will Parking Passes Need to be Ordered for this Event?", "No");
+  const q29 = getRadioButton("Will There be Food or Beverages Served at This Event? *For allowed areas only*", "No");
+  
   
   q1.click();
   q6.value = orgName;
   q7.value = name;
   q8.value = phone;
   q9.value = email;
-  q10.value = ""; // president's name
-  q11.value = ""; // president's phone
+  q10.value = presName;
+  q11.value = presPhone;
   q12.value = presEmail;
   q13.value = ruoName;
-  q14.value = ""; // ruo phone
+  q14.value = ruoPhone;
   q15.value = ruoEmail;
   q16.value = advName;
   q17.value = advPhone;
-  q18.value = ""; // adv email
+  q18.value = advEmail;
   q24.click();
   q25.click();
   q26.click();
-  q27.click();
+  q27.value = "N/A";
+  q28.value = "No"
+
 }
