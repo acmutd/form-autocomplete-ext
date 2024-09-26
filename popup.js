@@ -5,7 +5,7 @@ window.onload = async function() {
     ['orgName', 
       'name', 'phone', 'email', 
       'presName', 'presPhone', 'presEmail', 
-      'ruoName', 'presPhone', 'ruoEmail', 
+      'ruoName', 'ruoPhone', 'ruoEmail', 
       'advName', 'advPhone', 'advEmail']);
   console.log("data: ", data);
   
@@ -189,8 +189,18 @@ function autofillForm(orgName, name, phone, email, presName, presPhone, presEmai
   const q26 = getRadioButton("Will you need a Microphone?", "No, a microphone is not needed");
   const q27 = getInputField("If you need more than one microphone for this event, list the number and type of microphones needed below: * Type N/A if no microphone is needed. *", "N/A");
   const q28 = getRadioButton("Will Parking Passes Need to be Ordered for this Event?", "No");
-  const q29 = getRadioButton("Will There be Food or Beverages Served at This Event? *For allowed areas only*", "No");
-  
+  // const q29 = getRadioButton("How many parking passes will you need?", "");
+  // const q30 = getRadioButton("Will There be Any Off-Campus Guests, Guest Speaker(s), Performer(s), or Vendor(s)?", "")
+  // const q31 = getInputField("Names(s) and Number of Off-Campus Guests, Guest Speakers, Performers, or Vendors: (Write N/A if there will not be any Off-Campus Guests, etc.)", "N/A");
+  const q32 = getRadioButton("Will There be Food or Beverages Served at This Event? *For allowed areas only*", "No");
+  const q33 = getRadioButton("Will Press be Attending this Event?", "No");
+  const q34 = getRadioButton("Do You Have a Co-Sponsor(s) for This Event? (Ex: Another Student Organization, UTD Department, business, etc.)", "");
+  const q35 = getInputField("Name of Co-Sponsor(s) and Description of Sponsorship (ex: Co-Sponsor will be collaborating on all aspects of this event, Co-Sponsor will be provided financial support, Co-Sponsor will be providing food, etc.):", "");
+  const q36 = getRadioButton("Is This Event a Fundraiser for a charity or your Organization?", "No");
+  const q37 = getRadioButton("Will Money be Exchanged for/at This Event? (Admission Fee, Monetary Prizes, Selling merch, etc.)", "No");
+  const q38 = getRadioButton("Will a Video/Movie/TV Show be Shown at This Event?", "No");
+  const q39 = getInputField("Describe How You Will Be Promoting This Event:", "Through our social media and posters");
+  const q40 = getInputField("Additional Comments:", "N/A");
   
   q1.click();
   q6.value = orgName;
@@ -206,10 +216,23 @@ function autofillForm(orgName, name, phone, email, presName, presPhone, presEmai
   q16.value = advName;
   q17.value = advPhone;
   q18.value = advEmail;
+  q23.click();
   q24.click();
   q25.click();
   q26.click();
   q27.value = "N/A";
-  q28.value = "No"
+  q28.click();
+  //q29.value = "";
+  //q30.click();
+  //q31.value = "N/A";
+  q32.click();
+  q33.click();
+  q34.click();
+  q35.value = "";
+  q36.click();
+  q37.click();
+  q38.click();
+  q39.value = "Through our social media and posters";
+  q40.value = "N/A";
 
 }
