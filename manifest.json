@@ -6,7 +6,7 @@
     "permissions": ["activeTab", "storage", "scripting"],
     "action": {
       "default_popup": "popup.html",
-      "default_icon": "hello_extensions.png"
+      "default_icon": "peechy.png"
     },
     "background": {
       "service_worker": "background.js"
