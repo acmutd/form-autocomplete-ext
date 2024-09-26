@@ -1,8 +1,8 @@
   {
     "manifest_version": 3,
-    "name": "Room Request Autofill",
+    "name": "Astra Autofill by ACM UTD",
     "version": "1.0",
-    "description": "Autofill frequently used fields in UTD room request forms.",
+    "description": "Autofill frequently used fields in UTD room request forms. Developed by Evan Wright & Michael Zhao.",
     "permissions": ["activeTab", "storage", "scripting"],
     "action": {
       "default_popup": "popup.html",
