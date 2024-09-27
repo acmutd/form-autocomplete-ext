@@ -303,9 +303,26 @@ function autofillForm(
     if (q40) q40.value = "N/A";
   }
 
-  // Call the autofill functions
+  // fill out the regular static questions
   autofillStaticQuestions();
 
-  // Delay to allow dynamic questions to load
-  setTimeout(autofillDynamicQuestions, 100); // Adjust delay as needed
+  // mutation observer watches for changes in the form container, i.e. the list of questions
+  const formContainer = document.querySelector("#question-list");
+  if (!formContainer) {
+    console.error("ERROR: Form container with id 'question-list' not found.");
+    return;
+  }
+
+  // every time a change is detected, call autofillDynamicQuestions which fills the dynamic questions
+  // causing a new dynamic question to appear until all questions are filled
+  const observer = new MutationObserver((mutations) => {
+    console.log("Mutation observed:", mutations);
+    autofillDynamicQuestions();
+  });
+
+  // start observing the form container for changes
+  observer.observe(formContainer, { childList: true, subtree: true });
+
+  // initial call to fill dynamic questions if any are already loaded
+  autofillDynamicQuestions();
 }
