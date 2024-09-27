@@ -1,6 +1,5 @@
-// Set up to run when the content script is loaded
 window.onload = async function () {
-  // Get stored values from Chrome storage
+  // when the script is loaded, get stored values from Chrome storage
   const data = await chrome.storage.sync.get([
     "orgName",
     "name",
@@ -18,81 +17,39 @@ window.onload = async function () {
   ]);
   console.log("data: ", data);
 
-  // Select the input field using the ID or a more precise selector
-  const orgName = document.getElementById("orgName");
-  const name = document.getElementById("name");
-  const phone = document.getElementById("phone");
-  const email = document.getElementById("email");
-  const presName = document.getElementById("presName");
-  const presPhone = document.getElementById("presPhone");
-  const presEmail = document.getElementById("presEmail");
-  const ruoName = document.getElementById("ruoName");
-  const ruoPhone = document.getElementById("ruoPhone");
-  const ruoEmail = document.getElementById("ruoEmail");
-  const advName = document.getElementById("advName");
-  const advPhone = document.getElementById("advPhone");
-  const advEmail = document.getElementById("advEmail");
+  // select the input field using the ID or a more precise selector
+  const fields = {
+    orgName: document.getElementById("orgName"),
+    name: document.getElementById("name"),
+    phone: document.getElementById("phone"),
+    email: document.getElementById("email"),
+    presName: document.getElementById("presName"),
+    presPhone: document.getElementById("presPhone"),
+    presEmail: document.getElementById("presEmail"),
+    ruoName: document.getElementById("ruoName"),
+    ruoPhone: document.getElementById("ruoPhone"),
+    ruoEmail: document.getElementById("ruoEmail"),
+    advName: document.getElementById("advName"),
+    advPhone: document.getElementById("advPhone"),
+    advEmail: document.getElementById("advEmail"),
+  };
 
-  // If a stored value exists, display it
-  orgName.value = data.orgName || "";
-  name.value = data.name || "";
-  phone.value = data.phone || "";
-  email.value = data.email || "";
-  presName.value = data.presName || "";
-  presPhone.value = data.presPhone || "";
-  presEmail.value = data.presEmail || "";
-  ruoName.value = data.ruoName || "";
-  ruoPhone.value = data.ruoPhone || "";
-  ruoEmail.value = data.ruoEmail || "";
-  advName.value = data.advName || "";
-  advPhone.value = data.advPhone || "";
-  advEmail.value = data.advEmail || "";
+  // if a stored value exists, display it
+  for (const [key, field] of Object.entries(fields)) {
+    field.value = data[key] || "";
+  }
 
-  // Add an event listener to save the new value when the input changes
-  // and save the current value to Chrome storage
-  orgName.addEventListener("change", function () {
-    chrome.storage.sync.set({ orgName: orgName.value });
-  });
+  // helper function to add event listeners to input fields
+  function addChangeListener(field, key) {
+    field.addEventListener("change", function () {
+      chrome.storage.sync.set({ [key]: field.value });
+    });
+  }
 
-  name.addEventListener("change", function () {
-    chrome.storage.sync.set({ name: name.value });
-  });
-  phone.addEventListener("change", function () {
-    chrome.storage.sync.set({ phone: phone.value });
-  });
-  email.addEventListener("change", function () {
-    chrome.storage.sync.set({ email: email.value });
-  });
-
-  presName.addEventListener("change", function () {
-    chrome.storage.sync.set({ presName: presName.value });
-  });
-  presPhone.addEventListener("change", function () {
-    chrome.storage.sync.set({ presPhone: presPhone.value });
-  });
-  presEmail.addEventListener("change", function () {
-    chrome.storage.sync.set({ presEmail: presEmail.value });
-  });
-
-  ruoName.addEventListener("change", function () {
-    chrome.storage.sync.set({ ruoName: ruoName.value });
-  });
-  ruoPhone.addEventListener("change", function () {
-    chrome.storage.sync.set({ ruoPhone: ruoPhone.value });
-  });
-  ruoEmail.addEventListener("change", function () {
-    chrome.storage.sync.set({ ruoEmail: ruoEmail.value });
-  });
-
-  advName.addEventListener("change", function () {
-    chrome.storage.sync.set({ advName: advName.value });
-  });
-  advPhone.addEventListener("change", function () {
-    chrome.storage.sync.set({ advPhone: advPhone.value });
-  });
-  advEmail.addEventListener("change", function () {
-    chrome.storage.sync.set({ advEmail: advEmail.value });
-  });
+  // create event listeners for each stored config value to save the new value when the input changes
+  for (const [key, field] of Object.entries(fields)) {
+    addChangeListener(field, key);
+  }
 };
 
 document.getElementById("fill").addEventListener("click", async () => {
@@ -114,7 +71,7 @@ document.getElementById("fill").addEventListener("click", async () => {
 
   const data = await chrome.storage.sync.get(keys);
 
-  // Ensure each value is serializable (replace undefined with an empty string)
+  // ensure each value is serializable (replace undefined with an empty string)
   const sanitizedData = keys.map((key) => data[key] || "");
 
   chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
@@ -141,14 +98,14 @@ function autofillForm(
   advPhone,
   advEmail
 ) {
-  // Nested bc of chrome.scripting.executeScript jank
+  // nested bc of chrome.scripting.executeScript jank
   function getInputField(questionText) {
     const questionElement = Array.from(
       document.querySelectorAll('[data-automation-id="questionTitle"]')
     ).find((el) => el.textContent.includes(questionText));
 
     if (questionElement) {
-      // Locate the input field within the same question container
+      // locate the input field within the same question container
       const inputField = questionElement
         .closest('[data-automation-id="questionItem"]')
         .querySelector('input[data-automation-id="textInput"]');
@@ -159,7 +116,7 @@ function autofillForm(
   }
 
   function getRadioButton(questionText, labelText) {
-    // Find the div containing the specific question text
+    // get the div containing the specific question text
     const questions = document.querySelectorAll(
       '[data-automation-id="questionItem"]'
     );
@@ -179,7 +136,7 @@ function autofillForm(
       return null;
     }
 
-    // Find the radio button label based on the label text within the identified question container
+    // find the radio button label based on the label text within the identified question container
     const labels = questionContainer.querySelectorAll("label");
     let foundRadioButton = null;
 
@@ -200,7 +157,7 @@ function autofillForm(
     return foundRadioButton;
   }
 
-  // ---Initial Static Questions---
+  // ---Handler for Static Questions---
   function autofillStaticQuestions() {
     const q1 = getRadioButton(
       "Do you agree to the above Room Usage Policies?",
@@ -243,7 +200,7 @@ function autofillForm(
       "No"
     );
 
-    // Fill the static questions
+    // fill the static questions
     q1.click();
     q6.value = orgName;
     q7.value = name;
@@ -292,7 +249,7 @@ function autofillForm(
     const q39 = getInputField("Describe How You Will Be Promoting This Event:");
     const q40 = getInputField("Additional Comments:");
 
-    // Fill the dynamic questions if they exist
+    // fill the dynamic questions if they exist
     if (q32) q32.click();
     if (q33) q33.click();
     if (q34) q34.click();
