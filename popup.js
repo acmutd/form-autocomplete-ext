@@ -157,6 +157,14 @@ function autofillForm(
     return foundRadioButton;
   }
 
+  // react intercepts events at document-level, so we need to use execCommand to simulate typing
+  // for the form to recognize that the inputs have been filled
+  function typeText(element, text) {
+    element.focus();
+    document.execCommand("selectAll", false);
+    document.execCommand("insertText", false, text);
+  }
+
   // ---Handler for Static Questions---
   function autofillStaticQuestions() {
     const q1 = getRadioButton(
@@ -202,24 +210,24 @@ function autofillForm(
 
     // fill the static questions
     q1.click();
-    q6.value = orgName;
-    q7.value = name;
-    q8.value = phone;
-    q9.value = email;
-    q10.value = presName;
-    q11.value = presPhone;
-    q12.value = presEmail;
-    q13.value = ruoName;
-    q14.value = ruoPhone;
-    q15.value = ruoEmail;
-    q16.value = advName;
-    q17.value = advPhone;
-    q18.value = advEmail;
+    typeText(q6, orgName);
+    typeText(q7, name);
+    typeText(q8, phone);
+    typeText(q9, email);
+    typeText(q10, presName);
+    typeText(q11, presPhone);
+    typeText(q12, presEmail);
+    typeText(q13, ruoName);
+    typeText(q14, ruoPhone);
+    typeText(q15, ruoEmail);
+    typeText(q16, advName);
+    typeText(q17, advPhone);
+    typeText(q18, advEmail);
     q23.click();
     q24.click();
     q25.click();
     q26.click();
-    q27.value = "N/A";
+    typeText(q27, "N/A");
     q28.click();
   }
 
@@ -256,8 +264,8 @@ function autofillForm(
     if (q36) q36.click();
     if (q37) q37.click();
     if (q38) q38.click();
-    if (q39) q39.value = "Through our social media and posters";
-    if (q40) q40.value = "N/A";
+    if (q39) typeText(q39, "Through our social media and posters");
+    if (q40) typeText(q40, "N/A");
   }
 
   // fill out the regular static questions
