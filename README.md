@@ -1,5 +1,5 @@
 # Astra Autofill Chrome Extension
-This Chrome extension helps you automatically fill out a frequently used form for requesting a room for your student organization. It uses stored information to fill in static and dynamically appearing questions on the form
+This Chrome extension helps you automatically fill out a frequently used form for requesting a room for your student organization. It uses stored information to fill in static and dynamically appearing questions on the form. This extension is designed to work using the Special Room Request form and not the General Room Request form, as the formats are different and will require new handling logic to work for the General form.
 
 ## Features
 - Automatically fills in static questions
@@ -31,6 +31,5 @@ This Chrome extension helps you automatically fill out a frequently used form fo
 
 ## Expansion Goals
 Should it be desired, this app has some room for improvement.
-- If Chrome storage turns out to be unreliable, save user data in a database (e.g. Mongo/Firebase), retrieve the data when autofilling
-- Add more questions to the pre-filling menu to allow users with consistent requirements to avoid hassle
+- Possibly add an advanced config option to fill in the other dynamic question and/or some repeatable sections (i.e. if every projects build night is being scheduled and the event name / purpose is going to be consistent)
 - Anything else that the Great Lord of ACM, Farhan Jamil, so desires
