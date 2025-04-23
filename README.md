@@ -9,6 +9,7 @@ This Chrome extension helps you automatically fill out a frequently used form fo
 ## How It Works
 - Static Questions: The extension fills out the first 28 static questions on the form using stored information
 - Dynamic Questions: The extension uses a MutationObserver to detect when new questions are added to the form and fills them out automatically
+- Due to the React state of the site not being updated through pure injection, we simulate typing in the form at the document level so the React state is updated and the form submission recognizes that the inputs are filled
 
 ## Installation and Setup
 1. Clone or Download the Repository:
@@ -25,11 +26,25 @@ This Chrome extension helps you automatically fill out a frequently used form fo
   - This information will be saved in Chrome storage and used to autofill the form
 
 ## Usage
-1. Open the Astra Room Request Form [here](https://forms.office.com/pages/responsepage.aspx?id=HR0ojU2c90uxbgMtFd6fbCKzmcu1b9VJokmgS-rkIMpUQkZFNFo1MkVOUFI3WjRYNlJWUEZIMkU5QSQlQCN0PWcu&route=shorturl)  
-2. Open the Autofill Chrome Extension while on that page
-3. Click the "Autofill" button to automatically fill the form
+1. Fill out the necessary requestor information saved in the extension
+2. Open the Astra Room Request Form [here](https://forms.office.com/pages/responsepage.aspx?id=HR0ojU2c90uxbgMtFd6fbCKzmcu1b9VJokmgS-rkIMpUQkZFNFo1MkVOUFI3WjRYNlJWUEZIMkU5QSQlQCN0PWcu&route=shorturl)  
+3. Open the Autofill Chrome Extension while on that page
+4. Click the "Autofill" button to automatically fill the form
+
+## Updating the Extension
+If any changes are made to the extension after installation and you would like to update it, follow these steps:
+1. Pull the latest changes
+   - Open a terminal and navigate to where the extension repo was originally cloned to
+   - Run ```git pull``` to collect the updates
+   - Alternatively, if Git was not used to install it, just re-download the latest ZIP file from GitHub and extract it again
+3. Reload the Extension in Chrome
+   - Go to ```chrome://extensions/```
+   - Make sure Developer mode is still turned on
+   - Find the Astra Autofill Extension
+   - Click the Reload button (🔄 icon) to apply the latest updates
 
 ## Expansion Goals
 Should it be desired, this app has some room for improvement.
 - Possibly add an advanced config option to fill in the other dynamic question and/or some repeatable sections (i.e. if every projects build night is being scheduled and the event name / purpose is going to be consistent)
+- Currently the app is in a personal repo for testing but will be migrated to the official ACM UTD Github once results are satisfactory and it is available for widespread officer usage
 - Anything else that the Great Lord of ACM, Farhan Jamil, so desires
