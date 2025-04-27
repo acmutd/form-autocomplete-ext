@@ -27,7 +27,7 @@ This Chrome extension helps you automatically fill out a frequently used form fo
 
 ## Usage
 1. Fill out the necessary requestor information saved in the extension
-2. Open the Astra Room Request Form [here](https://forms.office.com/pages/responsepage.aspx?id=HR0ojU2c90uxbgMtFd6fbCKzmcu1b9VJokmgS-rkIMpUQkZFNFo1MkVOUFI3WjRYNlJWUEZIMkU5QSQlQCN0PWcu&route=shorturl)  
+2. Go to Astra [here](https://www.aaiscloud.com/UTXDallas/default.aspx?home) and click Special Room Request Form or go there directly [here](https://forms.office.com/pages/responsepage.aspx?id=HR0ojU2c90uxbgMtFd6fbCKzmcu1b9VJokmgS-rkIMpUQkZFNFo1MkVOUFI3WjRYNlJWUEZIMkU5QSQlQCN0PWcu&route=shorturl)  
 3. Open the Autofill Chrome Extension while on that page
 4. Click the "Autofill" button to automatically fill the form
 
@@ -46,5 +46,5 @@ If any changes are made to the extension after installation and you would like t
 ## Expansion Goals
 Should it be desired, this app has some room for improvement.
 - Possibly add an advanced config option to fill in the other dynamic question and/or some repeatable sections (i.e. if every projects build night is being scheduled and the event name / purpose is going to be consistent)
-- Currently the app is in a personal repo for testing but will be migrated to the official ACM UTD Github once results are satisfactory and it is available for widespread officer usage
-- Anything else that the Great Lord of ACM, Farhan Jamil, so desires
+- Possibly add a version or separate check for the general request form, since the general form has a calendar interface that allows for repeatable events to be scheduled all at once (the calendar interface sucks but 16 requests for a weekly event is way worse than one slightly more tedious request)
+- Anything else required by ACM officers for ease of usage
