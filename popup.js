@@ -157,15 +157,7 @@ function autofillForm(
     return foundRadioButton;
   }
 
-  // react intercepts events at document-level, so we need to use execCommand to simulate typing
-  // for the form to recognize that the inputs have been filled
-  function typeText(element, text) {
-    element.focus();
-    document.execCommand("selectAll", false);
-    document.execCommand("insertText", false, text);
-  }
-
-  // ---Handler for Static Questions---
+  // handler for static questions
   function autofillStaticQuestions() {
     const q1 = getRadioButton(
       "Do you agree to the above Room Usage Policies?",
@@ -210,28 +202,28 @@ function autofillForm(
 
     // fill the static questions
     q1.click();
-    typeText(q6, orgName);
-    typeText(q7, name);
-    typeText(q8, phone);
-    typeText(q9, email);
-    typeText(q10, presName);
-    typeText(q11, presPhone);
-    typeText(q12, presEmail);
-    typeText(q13, ruoName);
-    typeText(q14, ruoPhone);
-    typeText(q15, ruoEmail);
-    typeText(q16, advName);
-    typeText(q17, advPhone);
-    typeText(q18, advEmail);
+    setNativeValue(q6, orgName);
+    setNativeValue(q7, name);
+    setNativeValue(q8, phone);
+    setNativeValue(q9, email);
+    setNativeValue(q10, presName);
+    setNativeValue(q11, presPhone);
+    setNativeValue(q12, presEmail);
+    setNativeValue(q13, ruoName);
+    setNativeValue(q14, ruoPhone);
+    setNativeValue(q15, ruoEmail);
+    setNativeValue(q16, advName);
+    setNativeValue(q17, advPhone);
+    setNativeValue(q18, advEmail);
     q23.click();
     q24.click();
     q25.click();
     q26.click();
-    typeText(q27, "N/A");
+    setNativeValue(q27, "N/A");
     q28.click();
   }
 
-  // ---Handler for Dynamic Questions---
+  // handler for dynamic questions
   function autofillDynamicQuestions() {
     const q32 = getRadioButton(
       "Will There be Food or Beverages Served at This Event? *For allowed areas only*",
@@ -264,8 +256,22 @@ function autofillForm(
     if (q36) q36.click();
     if (q37) q37.click();
     if (q38) q38.click();
-    if (q39) typeText(q39, "Through our social media and posters");
-    if (q40) typeText(q40, "N/A");
+    if (q39) setNativeValue(q39, "Through our social media and posters");
+    if (q40) setNativeValue(q40, "N/A");
+  }
+
+  // helper function to set the value of an input element by simulating user input (trigger input and change events)
+  function setNativeValue(element, value) {
+    const lastValue = element.value;
+    element.value = value;
+    const event = new Event("input", { bubbles: true });
+    // Hack for React 16+
+    const tracker = element._valueTracker;
+    if (tracker) {
+      tracker.setValue(lastValue);
+    }
+    element.dispatchEvent(event);
+    element.dispatchEvent(new Event("change", { bubbles: true }));
   }
 
   // fill out the regular static questions
