@@ -14,7 +14,7 @@ This Chrome extension helps you automatically fill out a frequently used form fo
 ## Installation and Setup
 1. Clone or Download the Repository:
    ```
-   git clone https://github.com/yourusername/form-autofill-extension.git
+   git clone https://github.com/yourusername/form-autofill-ext.git
    ```
 2. Load the Extension in Chrome:
   - Open Chrome and go to chrome://extensions/
